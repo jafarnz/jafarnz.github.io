@@ -2,7 +2,7 @@
 
 A modern, responsive portfolio website built with Next.js and Framer Motion, showcasing my projects and skills as a full-stack developer.
 
-![Portfolio Preview](/public/portfoliopreview.png)
+![Portfolio Preview](/public/PortfolioPreview.png)
 
 ## ✨ Features
 
