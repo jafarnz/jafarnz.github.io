@@ -15,7 +15,7 @@ export function Navigation() {
       <nav className="container mx-auto flex h-16 items-center justify-between px-6">
         <Link href="/" className="flex items-center">
           <Image
-            src="/SwyftNavBar.webp"
+            src="/SwyftNavBar.png"
             alt="Swyft Logo"
             width={120}
             height={48}
