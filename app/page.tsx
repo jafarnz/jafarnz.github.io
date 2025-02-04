@@ -1,24 +1,50 @@
 "use client"
 
 import { useRef } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, useScroll, useTransform, useSpring, MotionValue } from "framer-motion"
 import { ParticlesContainer } from "@/components/particles"
 import { SkillsCloud } from "@/components/skills-cloud"
 import { ProjectsShowcase } from "@/components/projects-showcase"
 import Image from "next/image"
 
+function useParallax(value: MotionValue<number>, distance: number) {
+  return useTransform(value, [0, 1], [-distance, distance])
+}
+
 export default function Home() {
-  const containerRef = useRef(null)
+  const ref = useRef(null)
+  const skillsRef = useRef(null)
+  const projectsRef = useRef(null)
+
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: ref,
     offset: ["start start", "end start"],
   })
 
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8])
+  const { scrollYProgress: skillsScrollProgress } = useScroll({
+    target: skillsRef,
+    offset: ["start end", "end start"],
+  })
+
+  const { scrollYProgress: projectsScrollProgress } = useScroll({
+    target: projectsRef,
+    offset: ["start end", "end start"],
+  })
+
+  const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 }
+  const smoothProgress = useSpring(scrollYProgress, springConfig)
+  const smoothSkillsProgress = useSpring(skillsScrollProgress, springConfig)
+  const smoothProjectsProgress = useSpring(projectsScrollProgress, springConfig)
+
+  const y = useParallax(smoothProgress, 300)
+  const skillsY = useParallax(smoothSkillsProgress, 100)
+  const projectsY = useParallax(smoothProjectsProgress, 100)
+
+  const opacity = useTransform(smoothProgress, [0, 0.5], [1, 0])
+  const scale = useTransform(smoothProgress, [0, 0.5], [1, 0.8])
 
   return (
-    <main className="relative min-h-screen" ref={containerRef}>
+    <main className="relative min-h-screen" ref={ref}>
       <ParticlesContainer />
 
       <motion.section 
@@ -61,19 +87,41 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <section className="py-32">
+      <motion.section 
+        ref={skillsRef}
+        style={{ y: skillsY }}
+        className="py-32"
+      >
         <div className="container mx-auto px-4">
-          <h2 className="mb-16 text-center text-4xl font-bold">Skills & Technologies</h2>
-          <SkillsCloud />
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="mb-16 text-center text-4xl font-bold">Skills & Technologies</h2>
+            <SkillsCloud />
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="py-32">
+      <motion.section 
+        ref={projectsRef}
+        style={{ y: projectsY }}
+        className="py-32"
+      >
         <div className="container mx-auto px-4">
-          <h2 className="mb-16 text-center text-4xl font-bold">Featured Projects</h2>
-          <ProjectsShowcase />
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="mb-16 text-center text-4xl font-bold">Featured Projects</h2>
+            <ProjectsShowcase />
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
     </main>
   )
 }
