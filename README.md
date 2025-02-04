@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Jafar's Portfolio
 
-## Getting Started
+A modern, responsive portfolio website built with Next.js and Framer Motion, showcasing my projects and skills as a full-stack developer.
 
-First, run the development server:
+![Portfolio Preview](/public/TPConnectImage1.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## ✨ Features
+
+- 🎨 Modern, minimalist design with smooth animations
+- 🌙 Interactive project showcases with image galleries
+- 💻 Responsive layout that works on all devices
+- ⚡ Built with performance and accessibility in mind
+- 🎭 Beautiful transitions and micro-interactions
+- 🛠️ Interactive skills cloud with technology badges
+
+## 🛠️ Built With
+
+- **Framework**: [Next.js 14](https://nextjs.org/) - React framework for production
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- **Animations**: [Framer Motion](https://www.framer.com/motion/) - Production-ready motion library
+- **Icons**: [React Icons](https://react-icons.github.io/react-icons/) - Popular icon sets
+- **Deployment**: GitHub Pages - Fast and reliable static hosting
+
+## 🔥 Projects Featured
+
+### TPConnect
+A revolutionary platform connecting Temasek Polytechnic students for collaborative learning and resource sharing.
+- Real-time chat and collaboration
+- Module-specific study groups
+- Resource sharing platform
+- Built with Next.js, React, TypeScript, Tailwind, PostgreSQL, and Supabase
+
+### SwyftViewer
+Professional-grade financial analytics platform for tracking cryptocurrencies and stocks in real-time.
+- Real-time market data
+- Advanced charting capabilities
+- Portfolio tracking
+- Built with React, Chart.js, WebSocket, Node.js, and MongoDB
+
+## 🚀 Getting Started
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/portfolio.git
+   ```
+
+2. Install dependencies:
+   ```bash
+   cd portfolio
+   npm install
+   ```
+
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📝 Project Structure
+
+```
+portfolio/
+├── app/                  # Next.js app directory
+├── components/           # Reusable components
+├── public/              # Static assets
+└── lib/                 # Utility functions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎨 Color Scheme
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Primary: Custom accent colors for each project
+- Background: Rich black with subtle gradients
+- Text: White and gray variations
+- Accents: Project-specific brand colors
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📱 Responsive Design
 
-## Learn More
+The portfolio is fully responsive and optimized for:
+- 📱 Mobile devices
+- 💻 Tablets
+- 🖥️ Desktop screens
+- 📺 Large displays
 
-To learn more about Next.js, take a look at the following resources:
+## 🤝 Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+While this is a personal portfolio, suggestions and feedback are always welcome! Feel free to:
+1. Fork the repository
+2. Create a feature branch
+3. Submit a pull request
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📄 License
 
-## Deploy on Vercel
+This project is open source and available under the [MIT License](LICENSE).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📬 Contact
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Website: [jafarnz.github.io](https://jafarnz.github.io)
+- LinkedIn: [Jafar Niaz](https://www.linkedin.com/in/jafar-niaz-27523231b/)
+- Email: [jaf.nz@icloud.com](mailto:jaf.nz@icloud.com)
+- GitHub: [jafarnz](https://github.com/jafarnz)
+
+---
+
+Made with ❤️ by Jafar Niaz
