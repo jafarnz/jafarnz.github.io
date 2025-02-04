@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef, useEffect } from "react"
-import { motion, useScroll, useTransform, useSpring, MotionValue } from "framer-motion"
+import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import { ParticlesContainer } from "@/components/particles"
 import { SkillsCloud } from "@/components/skills-cloud"
 import { ProjectsShowcase } from "@/components/projects-showcase"
