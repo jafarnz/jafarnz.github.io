@@ -37,6 +37,13 @@ Professional-grade financial analytics platform for tracking cryptocurrencies an
 - Portfolio tracking
 - Built with React, Chart.js, WebSocket, Node.js, and MongoDB
 
+### Swyft
+A digital solutions agency empowering Singapore's small businesses through web development and digital transformation.
+- Modern web development
+- Digital transformation consulting
+- Business process automation
+- Built with Next.js, React, TypeScript, and Tailwind
+
 ## 🚀 Getting Started
 
 1. Clone the repository:

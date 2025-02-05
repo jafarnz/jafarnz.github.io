@@ -53,4 +53,27 @@ export const projects = {
     link: "https://swyftviewer.vercel.app",
     accent: "#00FF88",
   },
+  swyft: {
+    title: "Swyft",
+    description:
+      "A digital solutions agency empowering Singapore's small businesses through web development and digital transformation.",
+    images: [
+      "/SwyftImage1.png",
+      "/SwyftImage2.png",
+    ],
+    features: [
+      "Modern web development",
+      "Digital transformation consulting",
+      "Business process automation",
+      "Custom software solutions",
+    ],
+    tech: [
+      { name: "Next.js" },
+      { name: "React" },
+      { name: "TypeScript" },
+      { name: "Tailwind" },
+    ],
+    link: "https://swyft3.vercel.app",
+    accent: "#4B4BFF",
+  },
 } 
