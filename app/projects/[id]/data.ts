@@ -76,4 +76,27 @@ export const projects = {
     link: "https://swyft3.vercel.app",
     accent: "#4B4BFF",
   },
+  swyftbiz: {
+    title: "swyftbiz",
+    description:
+      "An implemented design for a client's business website, creating a static view for them before they proceeded with implementation.",
+    images: [
+      "/SwyftBiz1.png",
+      "/SwyftBiz2.png",
+    ],
+    features: [
+      "Modern UI design with TailwindCSS",
+      "Creation of dashboards, analytics etc.",
+      "Simplifying SaaS innovation ",
+      "Custom software solutions",
+    ],
+    tech: [
+      { name: "Next.js" },
+      { name: "React" },
+      { name: "TypeScript" },
+      { name: "Tailwind" },
+    ],
+    link: "https://swyftbiz.vercel.app",
+    accent: "#4B4BFF",
+  },
 } 
