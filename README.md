@@ -106,16 +106,13 @@ While this is a personal portfolio, suggestions and feedback are always welcome!
 2. Create a feature branch
 3. Submit a pull request
 
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
 ## 📬 Contact
 
 - Website: [jafarnz.github.io](https://jafarnz.github.io)
 - LinkedIn: [Jafar Niaz](https://www.linkedin.com/in/jafar-niaz-27523231b/)
 - Email: [jaf.nz@icloud.com](mailto:jaf.nz@icloud.com)
 - GitHub: [jafarnz](https://github.com/jafarnz)
+- Discord: [Swyft](https://discord.gg/CSNy46hZGd)
 
 ---
 
