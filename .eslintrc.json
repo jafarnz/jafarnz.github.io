@@ -1,3 +1,6 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "root": true,
+  // No "extends" key means no presets are inherited.
+  // An empty "rules" object means no specific rules are enabled or disabled here.
+  "rules": {}
 }
