@@ -99,4 +99,27 @@ export const projects = {
     link: "https://swyftbiz.vercel.app",
     accent: "#4B4BFF",
   },
+  jafspaper: {
+    title: "jaf's paper",
+    description:
+      "Personal blog exploring thoughts, ideas, and reflections on technology, writing, and more.",
+    images: [
+      "/blog.png",
+      // Add another relevant image path here if available, otherwise, the gallery will show just one.
+    ],
+    features: [
+      "Personal thoughts and reflections",
+      "Exploration of various topics",
+      "Clean, minimalist design",
+      "Built with Next.js and Tailwind",
+    ],
+    tech: [
+      { name: "Next.js" },
+      { name: "React" },
+      { name: "TypeScript" },
+      { name: "Tailwind" },
+    ],
+    link: "https://jafspaper.vercel.app/",
+    accent: "#FFFFFF", // White accent theme
+  },
 } 

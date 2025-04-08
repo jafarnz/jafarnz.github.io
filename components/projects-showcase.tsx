@@ -17,24 +17,31 @@ const projects = [
     id: "swyftbiz",
     title: "swyftbiz",
     description: "Professional UI design for a SaaS management platform.",
-    image: "./SwyftBiz1.png",
+    image: "/SwyftBiz1.png",
     color: "#000000",
   },
   {
     id: "swyft",
     title: "Swyft",
-    description: "Official portfolio for SwiftSolutions",
+    description: "Official portfolio for SwyftSolutions",
     image:
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/swyft-high-resolution-logo-aMMZLDGdUE50vdd4igHorbpC9Y5TLg.png",
     color: "#4B4BFF",
   },
   {
-  id:"swyftviewer",
-  title: "SwyftViewer",
-  description: "Professional-grade financial analytics platform for tracking cryptocurrencies and stocks in real-time.",
-  image: "./SwyftViewerImage1.png",
-  color: "#00FF88",
-  }
+    id: "swyftviewer",
+    title: "SwyftViewer",
+    description: "Professional financial analytics platform",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-8CZbdCbVBARrWWFgD3GUYgDGQVAKm7.png",
+    color: "#000000",
+  },
+  {
+    id: "jafspaper",
+    title: "jaf's paper",
+    description: "Personal blog exploring thoughts, ideas, and reflections.",
+    image: "/blog.png",
+    color: "#FFFFFF",
+  },
 ]
 
 export function ProjectsShowcase() {

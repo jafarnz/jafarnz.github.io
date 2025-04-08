@@ -44,6 +44,11 @@ A digital solutions agency empowering Singapore's small businesses through web d
 - Business process automation
 - Built with Next.js, React, TypeScript, and Tailwind
 
+### jaf's paper
+Personal blog exploring thoughts, ideas, and reflections on technology, writing, and more.
+- Built with Next.js and Tailwind CSS.
+- Clean, minimalist design.
+
 ## 🚀 Getting Started
 
 1. Clone the repository:

@@ -169,15 +169,16 @@ export function ProjectClient({ project }: ProjectClientProps) {
             </div>
           </div>
 
-          <a
+          {/* Conditionally style the Visit Project link based on accent color */}
+          <Link
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block rounded-lg px-6 py-3 font-semibold text-white transition-transform hover:scale-105"
+            className={`inline-block rounded-lg px-6 py-3 font-semibold transition-transform hover:scale-105 ${project.accent === "#FFFFFF" ? "text-black" : "text-white"}`}
             style={{ backgroundColor: project.accent }}
           >
             Visit Project
-          </a>
+          </Link>
         </div>
       </div>
     </motion.main>

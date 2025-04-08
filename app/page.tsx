@@ -6,61 +6,72 @@ import { ParticlesContainer } from "@/components/particles"
 import { SkillsCloud } from "@/components/skills-cloud"
 import { ProjectsShowcase } from "@/components/projects-showcase"
 import Image from "next/image"
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 
 export default function Home() {
   const ref = useRef(null)
-  const skillsRef = useRef(null)
+  const heroRef = useRef(null)
+  const blogRef = useRef(null)
   const projectsRef = useRef(null)
+  const skillsRef = useRef(null)
 
   // Ensure page starts at top on load
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
-  const { scrollYProgress } = useScroll()
-
-  const { scrollYProgress: skillsScrollProgress } = useScroll({
-    target: skillsRef,
-    offset: ["0 1", "0.5 0.5"]
+  const { scrollYProgress: blogScrollProgress } = useScroll({
+    target: blogRef,
+    offset: ["start end", "end 0.8"],
   })
 
   const { scrollYProgress: projectsScrollProgress } = useScroll({
     target: projectsRef,
-    offset: ["0 1", "0.5 0.5"]
+    offset: ["start end", "end 0.8"],
   })
 
-  // Spring configs for smoother animations
-  const springConfig = { stiffness: 70, damping: 15, restDelta: 0.001 }
-  const smoothProgress = useSpring(scrollYProgress, springConfig)
-  const smoothSkillsProgress = useSpring(skillsScrollProgress, springConfig)
+  const { scrollYProgress: skillsScrollProgress } = useScroll({
+    target: skillsRef,
+    offset: ["start end", "end 0.8"],
+  })
+
+  // Spring configs - can potentially reduce damping for faster feel
+  const springConfig = { stiffness: 80, damping: 12, restDelta: 0.001 }
+  const smoothBlogProgress = useSpring(blogScrollProgress, springConfig)
   const smoothProjectsProgress = useSpring(projectsScrollProgress, springConfig)
+  const smoothSkillsProgress = useSpring(skillsScrollProgress, springConfig)
 
   // Hero section animations
-  const heroOpacity = useTransform(smoothProgress, [0, 0.25], [1, 0])
-  const heroScale = useTransform(smoothProgress, [0, 0.25], [1, 0.8])
-  const heroY = useTransform(smoothProgress, [0, 0.25], [0, -100])
+  const { scrollYProgress: heroScrollProgress } = useScroll({ target: heroRef, offset: ["start start", "end 0.6"] });
+  const smoothHeroProgress = useSpring(heroScrollProgress, springConfig);
+  const heroOpacity = useTransform(smoothHeroProgress, [0, 0.6], [1, 0]);
+  const heroScale = useTransform(smoothHeroProgress, [0, 0.6], [1, 0.85]);
+  const heroY = useTransform(smoothHeroProgress, [0, 0.6], [0, -150]);
 
-  // Skills section animations
-  const skillsOpacity = useTransform(smoothSkillsProgress, [0, 0.5, 1], [0, 1, 1])
-  const skillsScale = useTransform(smoothSkillsProgress, [0, 0.5, 1], [0.8, 1, 1])
-  const skillsY = useTransform(smoothSkillsProgress, [0, 1], [200, 0])
-
-  // Projects section animations
-  const projectsOpacity = useTransform(smoothProjectsProgress, [0, 0.5, 1], [0, 1, 1])
-  const projectsScale = useTransform(smoothProjectsProgress, [0, 0.5, 1], [0.8, 1, 1])
-  const projectsY = useTransform(smoothProjectsProgress, [0, 1], [200, 0])
+  // Helper function for standard section animation
+  const createSectionAnimation = (progress: any) => ({
+    opacity: useTransform(progress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]),
+    y: useTransform(progress, [0, 0.1, 0.9, 1], [80, 0, 0, -80]),
+  })
+  
+  // Apply standard animation to other sections
+  const blogAnimation = createSectionAnimation(smoothBlogProgress)
+  const projectsAnimation = createSectionAnimation(smoothProjectsProgress)
+  const skillsAnimation = createSectionAnimation(smoothSkillsProgress)
 
   return (
-    <main className="relative" ref={ref}>
+    <main className="relative flex flex-col bg-black" ref={ref}>
       <ParticlesContainer />
 
-      <motion.section 
+      <motion.section
+        ref={heroRef}
         style={{ 
-          opacity: heroOpacity,
-          scale: heroScale,
-          y: heroY,
-        }} 
-        className="relative flex min-h-screen items-center justify-center pt-24"
+          opacity: heroOpacity, 
+          scale: heroScale, 
+          y: heroY 
+        }}
+        className="relative z-10 flex min-h-screen items-center justify-center pt-24"
       >
         <div className="container mx-auto px-4">
           <motion.div
@@ -74,7 +85,7 @@ export default function Home() {
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ 
+              transition={{
                 duration: 0.8,
                 delay: 0.4,
                 type: "spring",
@@ -103,14 +114,56 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section 
-        ref={skillsRef}
-        style={{ 
-          y: skillsY,
-          opacity: skillsOpacity,
-          scale: skillsScale
-        }}
-        className="sticky top-0 py-32 min-h-screen flex items-center bg-black/50 backdrop-blur-sm"
+      <motion.section
+        ref={blogRef}
+        style={blogAnimation}
+        className="relative z-10 flex min-h-screen items-center py-32"
+      >
+        <div className="container mx-auto px-4">
+          <motion.div
+            className="transform-gpu"
+          >
+            <h2 className="mb-12 text-center text-4xl font-bold">From the Blog</h2>
+            <Link 
+              href="https://jafspaper.vercel.app/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group block mx-auto max-w-4xl transition-transform duration-300 ease-in-out hover:scale-[1.02] focus:scale-[1.02]"
+            >
+              <div className="overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/50 shadow-lg backdrop-blur-md">
+                <div className="grid gap-6 md:grid-cols-2 md:gap-0">
+                  <div className="relative aspect-video md:aspect-auto">
+                    <Image 
+                      src="/blog.png" 
+                      alt="jaf's paper blog preview" 
+                      fill 
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:bg-gradient-to-r"></div>
+                  </div>
+                  <div className="flex flex-col justify-center p-6 md:p-8">
+                    <p className="mb-1 text-sm text-gray-400">Latest Post • April 8, 2024</p>
+                    <h3 className="mb-3 text-2xl font-semibold text-white">my first post (and why)</h3>
+                    <p className="mb-4 text-gray-300">
+                      Feels kinda crazy that I'm writing something, haven't been writing actively about remotely anything...
+                    </p>
+                    <div className="mt-2 inline-flex items-center font-medium text-white group-hover:text-primary transition-colors">
+                      Read More 
+                      <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      <motion.section
+        ref={projectsRef}
+        style={projectsAnimation}
+        className="relative z-10 flex min-h-screen items-center py-32"
       >
         <div className="container mx-auto px-4">
           <motion.div
@@ -118,16 +171,32 @@ export default function Home() {
           >
             <motion.h2 
               className="mb-16 text-center text-4xl font-bold"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              Featured Projects
+            </motion.h2>
+            <motion.div
+            >
+              <ProjectsShowcase />
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      <motion.section
+        ref={skillsRef}
+        style={skillsAnimation}
+        className="relative z-10 flex min-h-screen items-center py-32"
+      >
+        <div className="container mx-auto px-4">
+          <motion.div
+            className="transform-gpu"
+          >
+            <motion.h2 
+              className="mb-16 text-center text-4xl font-bold"
             >
               Skills & Technologies
             </motion.h2>
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
             >
               <SkillsCloud />
             </motion.div>
@@ -135,37 +204,6 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section 
-        ref={projectsRef}
-        style={{ 
-          y: projectsY,
-          opacity: projectsOpacity,
-          scale: projectsScale
-        }}
-        className="sticky top-0 py-32 min-h-screen flex items-center bg-black/50 backdrop-blur-sm"
-      >
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="transform-gpu"
-          >
-            <motion.h2 
-              className="mb-16 text-center text-4xl font-bold"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              Featured Projects
-            </motion.h2>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <ProjectsShowcase />
-            </motion.div>
-          </motion.div>
-        </div>
-      </motion.section>
     </main>
   )
 }
