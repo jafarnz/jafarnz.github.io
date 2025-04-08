@@ -1,6 +1,10 @@
 {
   "root": true,
-  // No "extends" key means no presets are inherited.
-  // An empty "rules" object means no specific rules are enabled or disabled here.
+  "extends": [
+    "next/core-web-vitals", 
+    "plugin:@typescript-eslint/recommended", // Recommended TS rules (can be empty if needed)
+    "next/typescript" // Next.js specific TS config
+  ],
+  // Keeping rules empty still disables specific rule enforcement from the above presets
   "rules": {}
 }

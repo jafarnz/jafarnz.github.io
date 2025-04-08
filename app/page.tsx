@@ -1,13 +1,22 @@
 "use client"
 
 import { useRef, useEffect } from "react"
-import { motion, useScroll, useTransform, useSpring } from "framer-motion"
+import { motion, useScroll, useTransform, useSpring, type MotionValue } from "framer-motion"
 import { ParticlesContainer } from "@/components/particles"
 import { SkillsCloud } from "@/components/skills-cloud"
 import { ProjectsShowcase } from "@/components/projects-showcase"
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+
+// Custom Hook for section animations
+function useSectionAnimation(progress: MotionValue<number>) {
+  return {
+    // Adjust ranges for quicker fade/slide
+    opacity: useTransform(progress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]), 
+    y: useTransform(progress, [0, 0.1, 0.9, 1], [80, 0, 0, -80]), // Reduced travel distance
+  }
+}
 
 export default function Home() {
   const ref = useRef(null)
@@ -49,16 +58,10 @@ export default function Home() {
   const heroScale = useTransform(smoothHeroProgress, [0, 0.6], [1, 0.85]);
   const heroY = useTransform(smoothHeroProgress, [0, 0.6], [0, -150]);
 
-  // Helper function for standard section animation
-  const createSectionAnimation = (progress: any) => ({
-    opacity: useTransform(progress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]),
-    y: useTransform(progress, [0, 0.1, 0.9, 1], [80, 0, 0, -80]),
-  })
-  
-  // Apply standard animation to other sections
-  const blogAnimation = createSectionAnimation(smoothBlogProgress)
-  const projectsAnimation = createSectionAnimation(smoothProjectsProgress)
-  const skillsAnimation = createSectionAnimation(smoothSkillsProgress)
+  // Apply custom hook for section animations
+  const blogAnimation = useSectionAnimation(smoothBlogProgress)
+  const projectsAnimation = useSectionAnimation(smoothProjectsProgress)
+  const skillsAnimation = useSectionAnimation(smoothSkillsProgress)
 
   return (
     <main className="relative flex flex-col bg-black" ref={ref}>
@@ -146,7 +149,7 @@ export default function Home() {
                     <p className="mb-1 text-sm text-gray-400">Latest Post • April 8, 2024</p>
                     <h3 className="mb-3 text-2xl font-semibold text-white">my first post (and why)</h3>
                     <p className="mb-4 text-gray-300">
-                      Feels kinda crazy that I'm writing something, haven't been writing actively about remotely anything...
+                      Feels kinda crazy that I&apos;m writing something, haven&apos;t been writing actively about remotely anything...
                     </p>
                     <div className="mt-2 inline-flex items-center font-medium text-white group-hover:text-primary transition-colors">
                       Read More 

@@ -49,6 +49,11 @@ Personal blog exploring thoughts, ideas, and reflections on technology, writing,
 - Built with Next.js and Tailwind CSS.
 - Clean, minimalist design.
 
+### *NING Studios
+Official website for music artist NING.
+- Features: Music discovery, tour dates, personality showcase, e-commerce.
+- Built with Next.js and Tailwind CSS.
+
 ## 🚀 Getting Started
 
 1. Clone the repository:

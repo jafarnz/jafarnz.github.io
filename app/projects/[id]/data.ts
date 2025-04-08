@@ -122,4 +122,29 @@ export const projects = {
     link: "https://jafspaper.vercel.app/",
     accent: "#FFFFFF", // White accent theme
   },
+  ningstudios: {
+    title: "*NING Studios",
+    description:
+      "Official website for music artist NING, showcasing their nine personalities and groundbreaking music.",
+    images: [
+      "/ning-studios-preview.png", // Placeholder - Add this image to /public
+      "/ning-studios-preview-2.png", // Added second image
+      // Add another relevant image path here if available
+    ],
+    features: [
+      "Artist Portfolio & Branding",
+      "Music Discovery (Album, Singles)",
+      "Tour Dates & Information",
+      "Interactive Personality Showcase",
+      "E-commerce Merch Store",
+    ],
+    tech: [
+      { name: "Next.js" },
+      { name: "React" },
+      { name: "Tailwind" },
+      // Add other relevant tech if known (e.g., TypeScript?)
+    ],
+    link: "https://ningstudios.vercel.app/",
+    accent: "#590221FF", // Maroon accent color
+  },
 } 

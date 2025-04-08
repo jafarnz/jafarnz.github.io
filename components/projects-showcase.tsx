@@ -42,6 +42,13 @@ const projects = [
     image: "/blog.png",
     color: "#FFFFFF",
   },
+  {
+    id: "ningstudios",
+    title: "*NING Studios",
+    description: "Official website for music artist NING.",
+    image: "/ning-studios-preview.png",
+    color: "#800000",
+  },
 ]
 
 export function ProjectsShowcase() {

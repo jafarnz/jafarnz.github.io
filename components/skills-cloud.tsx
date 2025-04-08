@@ -54,7 +54,7 @@ export function SkillsCloud() {
       animate="show"
       className="flex flex-wrap justify-center items-center gap-10 md:gap-16 max-w-4xl mx-auto"
     >
-      {skills.map((skill, index) => {
+      {skills.map((skill) => {
         const IconComponent = skill.icon
         return (
           <motion.div
