@@ -67,13 +67,13 @@ export default function Home() {
     <main className="relative flex flex-col bg-black" ref={ref}>
       <ParticlesContainer />
 
-      <motion.section
+      <motion.section 
         ref={heroRef}
         style={{ 
-          opacity: heroOpacity, 
-          scale: heroScale, 
+          opacity: heroOpacity,
+          scale: heroScale,
           y: heroY 
-        }}
+        }} 
         className="relative z-10 flex min-h-screen items-center justify-center pt-24"
       >
         <div className="container mx-auto px-4">
@@ -88,7 +88,7 @@ export default function Home() {
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{
+              transition={{ 
                 duration: 0.8,
                 delay: 0.4,
                 type: "spring",
@@ -117,7 +117,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section
+      <motion.section 
         ref={blogRef}
         style={blogAnimation}
         className="relative z-10 flex min-h-screen items-center py-32"
@@ -185,7 +185,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section
+      <motion.section 
         ref={skillsRef}
         style={skillsAnimation}
         className="relative z-10 flex min-h-screen items-center py-32"

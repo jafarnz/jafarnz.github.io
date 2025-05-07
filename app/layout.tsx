@@ -18,11 +18,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Jafar Niaz - Full Stack Developer Portfolio',
     description: 'Explore the projects and skills of Jafar Niaz.',
-    url: 'https://jafarnz.github.io', // Replace with your actual deployed URL if different
+    url: 'https://jafarnz.me', // Updated to use HTTPS with actual domain
     siteName: 'Jafar Niaz Portfolio',
     images: [
       {
-        url: '/PortfolioPreview.png', // Path relative to the 'public' directory
+        url: 'https://jafarnz.me/PortfolioPreview.png', // Updated to absolute URL with HTTPS
         width: 1200, // Recommended Open Graph image size
         height: 630,
         alt: 'Jafar Niaz Portfolio Preview',
