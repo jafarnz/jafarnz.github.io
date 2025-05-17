@@ -1,4 +1,4 @@
-# hey there, i\'m jafar! 🎀 (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧
+# hey there, i\'m jafar! 🎀
 
 welcome to my little corner of the internet! i\'m a full-stack developer who adores crafting cute and super cool digital experiences. this is where i show off some of the fun things i\'ve built!
 
