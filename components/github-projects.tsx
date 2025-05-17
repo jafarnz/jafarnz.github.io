@@ -6,15 +6,16 @@ import { GitFork, Star, ExternalLink, Github } from "lucide-react"
 import Link from "next/link"
 
 interface Repository {
-  id: number
-  name: string
-  description: string
-  html_url: string
-  homepage: string
-  stargazers_count: number
-  forks_count: number
-  language: string
-  topics: string[]
+  id: number | string; // Allow string for manual IDs
+  name: string;
+  description: string;
+  html_url: string; // For GitHub repos, this is the code. For manual, it can be the project link or a placeholder.
+  homepage: string; // For GitHub repos, this is the live demo. For manual, it is the live demo.
+  stargazers_count: number;
+  forks_count: number;
+  language: string;
+  topics: string[];
+  isManual?: boolean; // Flag for manually added projects
 }
 
 function getLanguageColor(language: string): string {
@@ -39,26 +40,28 @@ function getLanguageColor(language: string): string {
 
 const manualSideProjects: Repository[] = [
   {
-    id: Date.now() + 1, // Simple unique ID
+    id: "manual-swyftbiz", // Unique string ID
     name: "swyftbiz",
     description: "An implemented design for a client's business website, creating a static view for them before they proceeded with implementation.",
-    html_url: "https://swyftbiz.vercel.app",
-    homepage: "https://swyftbiz.vercel.app",
-    stargazers_count: 0, // Not applicable
-    forks_count: 0, // Not applicable
-    language: "TypeScript", // Primary language
+    html_url: "https://swyftbiz.vercel.app", // Keeping this as the external link for consistency with GitHub object structure
+    homepage: "https://swyftbiz.vercel.app", // This is the actual live demo link
+    stargazers_count: 0,
+    forks_count: 0,
+    language: "TypeScript",
     topics: ["next.js", "react", "typescript", "tailwind"],
+    isManual: true,
   },
   {
-    id: Date.now() + 2, // Simple unique ID
+    id: "manual-swyftviewer", // Unique string ID
     name: "SwyftViewer",
     description: "Professional-grade financial analytics platform for tracking cryptocurrencies and stocks in real-time.",
     html_url: "https://swyftviewer.vercel.app",
     homepage: "https://swyftviewer.vercel.app",
-    stargazers_count: 0, // Not applicable
-    forks_count: 0, // Not applicable
-    language: "React", // Primary language
+    stargazers_count: 0,
+    forks_count: 0,
+    language: "React",
     topics: ["react", "chart.js", "websockets", "node.js", "mongodb"],
+    isManual: true,
   },
 ];
 
@@ -74,19 +77,19 @@ export function GitHubProjects({ username = "jafarnz" }) {
         const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`)
         
         if (!response.ok) {
-          throw new Error("Failed to fetch repositories")
+          throw new Error("Failed to fetch repositories from GitHub")
         }
         
-        const data = await response.json()
-        
-        // Filter out forked repos and the current portfolio
-        const filteredRepos = data
+        let githubRepos = await response.json()
+        githubRepos = githubRepos
           .filter((repo: Repository) => !repo.name.includes("jafarnz.github.io"))
           .slice(0, 6)
         
-        setRepos([...manualSideProjects, ...filteredRepos])
+        setRepos([...manualSideProjects, ...githubRepos])
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Something went wrong")
+        console.error("GitHub fetch error:", err)
+        setError(err instanceof Error ? err.message : "Something went wrong fetching from GitHub")
+        setRepos(manualSideProjects)
       } finally {
         setLoading(false)
       }
@@ -95,99 +98,108 @@ export function GitHubProjects({ username = "jafarnz" }) {
     fetchRepos()
   }, [username])
 
-  if (loading) {
+  if (loading && repos.length === 0) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-pulse">
-        {[...Array(6)].map((_, i) => (
+        {[...Array(manualSideProjects.length + 3)].map((_, i) => (
           <div key={i} className="rounded-lg h-64 bg-[#eacce6]/20"></div>
         ))}
       </div>
     )
   }
 
-  if (error) {
+  if (error && !repos.some(r => manualSideProjects.find(m => m.id === r.id))) {
     return (
       <div className="text-center py-10">
-        <p className="text-red-500 mb-4">Error loading some GitHub projects: {error}</p>
-        <p className="text-sm text-[#604065]/80 mb-4">Manually added projects are still displayed below if available.</p>
-        <p>Check out my other projects directly on <a href={`https://github.com/${username}`} className="text-[#d14d84] underline">GitHub</a></p>
-        {manualSideProjects.length > 0 && !repos.some(repo => manualSideProjects.find(m => m.id === repo.id)) && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
-                {manualSideProjects.map(renderRepoCard)}
-            </div>
-        )}
+        <p className="text-red-500 mb-4">Error loading GitHub projects: {error}</p>
+        <p>Check out my projects directly on <a href={`https://github.com/${username}`} className="text-[#d14d84] underline">GitHub</a></p>
+      </div>
+    )
+  }
+  
+  if (repos.length === 0) {
+    return (
+      <div className="text-center py-10">
+        <p className="text-[#604065]/80">No side projects to display at the moment. Check back later!</p>
       </div>
     )
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-      {repos.map(renderRepoCard)}
+      {repos.map((repo, index) => renderRepoCard(repo, index))}
     </div>
   )
 }
 
-const renderRepoCard = (repo: Repository, index: number) => (
-  <motion.div
-    key={repo.id}
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: index * 0.1 }}
-    className="bg-[#f9f4fb] rounded-xl p-5 shadow-md hover:shadow-lg border border-[#eacce6] transition-all hover:translate-y-[-4px] group h-full flex flex-col"
-  >
-    <div className="flex justify-between items-start mb-3">
-      <div className="flex items-center space-x-2">
-        <Github className="h-5 w-5 text-[#604065]" />
-        <h3 className="font-semibold text-lg truncate max-w-[150px] text-[#604065]">{repo.name}</h3>
-      </div>
-      { (repo.stargazers_count > 0 || repo.forks_count > 0) && (
-      <div className="flex items-center space-x-3">
-        <div className="flex items-center space-x-1">
-          <Star className="h-4 w-4 text-[#d14d84]" />
-          <span className="text-xs text-[#604065]/70">{repo.stargazers_count}</span>
+const renderRepoCard = (repo: Repository, index: number) => {
+  const projectLink = repo.isManual ? `/projects/${repo.name}` : repo.html_url;
+  const linkTarget = repo.isManual ? "_self" : "_blank";
+  const linkText = repo.isManual ? "View Details" : (repo.html_url.includes("github.com") ? "View Code" : "View Project");
+  const linkIcon = repo.isManual ? <ExternalLink className="h-3 w-3 mr-1" /> : (repo.html_url.includes("github.com") ? <Github className="h-3 w-3 mr-1" /> : <ExternalLink className="h-3 w-3 mr-1" />);
+
+  return (
+    <motion.div
+      key={repo.id}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
+      className="bg-[#f9f4fb] rounded-xl p-5 shadow-md hover:shadow-lg border border-[#eacce6] transition-all hover:translate-y-[-4px] group h-full flex flex-col"
+    >
+      <div className="flex justify-between items-start mb-3">
+        <div className="flex items-center space-x-2">
+          {repo.html_url.includes("github.com") && !repo.isManual ? <Github className="h-5 w-5 text-[#604065]" /> : <ExternalLink className="h-5 w-5 text-[#604065]" />}
+          <h3 className="font-semibold text-lg truncate max-w-[150px] text-[#604065]">{repo.name}</h3>
         </div>
-        <div className="flex items-center space-x-1">
-          <GitFork className="h-4 w-4 text-[#d14d84]" />
-          <span className="text-xs text-[#604065]/70">{repo.forks_count}</span>
+        { (repo.stargazers_count > 0 || repo.forks_count > 0) && !repo.isManual && (
+        <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-1">
+            <Star className="h-4 w-4 text-[#d14d84]" />
+            <span className="text-xs text-[#604065]/70">{repo.stargazers_count}</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <GitFork className="h-4 w-4 text-[#d14d84]" />
+            <span className="text-xs text-[#604065]/70">{repo.forks_count}</span>
+          </div>
         </div>
+        )}
       </div>
-      )}
-    </div>
-    
-    {repo.language && (
-      <div className="flex items-center space-x-2 mb-2">
-        <span 
-          className="w-3 h-3 rounded-full" 
-          style={{ backgroundColor: getLanguageColor(repo.language) }}
-        />
-        <span className="text-xs text-[#604065]/80">{repo.language}</span>
-      </div>
-    )}
-    
-    <p className="text-[#604065]/90 text-sm mb-4 line-clamp-3 flex-grow">{repo.description || "No description provided."}</p>
-    
-    <div className="flex justify-between items-center mt-auto pt-2">
-      <Link
-        href={repo.html_url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-xs rounded-full inline-flex items-center bg-[#eacce6] px-3 py-1.5 text-[#604065] hover:bg-[#d14d84] hover:text-white transition-colors"
-      >
-        {repo.html_url.includes("github.com") ? <Github className="h-3 w-3 mr-1" /> : <ExternalLink className="h-3 w-3 mr-1" />}
-        {repo.html_url.includes("github.com") ? "View Code" : "View Project"}
-      </Link>
       
-      {repo.homepage && repo.homepage !== repo.html_url && (
-        <Link
-          href={repo.homepage}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs rounded-full inline-flex items-center bg-[#604065] px-3 py-1.5 text-white hover:bg-[#604065]/80 transition-colors"
-        >
-          <ExternalLink className="h-3 w-3 mr-1" />
-          Live Demo
-        </Link>
+      {repo.language && (
+        <div className="flex items-center space-x-2 mb-2">
+          <span 
+            className="w-3 h-3 rounded-full" 
+            style={{ backgroundColor: getLanguageColor(repo.language) }}
+          />
+          <span className="text-xs text-[#604065]/80">{repo.language}</span>
+        </div>
       )}
-    </div>
-  </motion.div>
-) 
+      
+      <p className="text-[#604065]/90 text-sm mb-4 line-clamp-3 flex-grow">{repo.description || "No description provided."}</p>
+      
+      <div className="flex justify-between items-center mt-auto pt-2">
+        <Link
+          href={projectLink}
+          target={linkTarget}
+          rel="noopener noreferrer"
+          className="text-xs rounded-full inline-flex items-center bg-[#eacce6] px-3 py-1.5 text-[#604065] hover:bg-[#d14d84] hover:text-white transition-colors"
+        >
+          {linkIcon}
+          {linkText}
+        </Link>
+        
+        {repo.homepage && (repo.isManual || repo.homepage !== repo.html_url) && (
+          <Link
+            href={repo.homepage}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs rounded-full inline-flex items-center bg-[#604065] px-3 py-1.5 text-white hover:bg-[#604065]/80 transition-colors"
+          >
+            <ExternalLink className="h-3 w-3 mr-1" />
+            Live Demo
+          </Link>
+        )}
+      </div>
+    </motion.div>
+  )
+} 
