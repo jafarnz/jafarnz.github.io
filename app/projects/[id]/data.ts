@@ -152,8 +152,8 @@ export const projects = {
     description:
       "a fabulously reimagined python last.fm scrobbler with a yassified ui (hot pink, hello kitty vibes!), auto-saved credentials, direct authentication, and real-time 'now playing' updates. built for a client who needed something effective and absolutely cunty.",
     images: [
-      "/LastFMScrobbler1.png", // Main image
-      "/LastFMScrobbler2.png"  // Second image
+      "/LastFMScrobblerImage1.png", // Main image
+      "/LastFMScrobblerImage2.png"  // Second image
     ],
     features: [
       "credentials auto-saved in config.json (no more login blues!)",
