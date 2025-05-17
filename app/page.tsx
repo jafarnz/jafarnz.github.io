@@ -1,212 +1,424 @@
 "use client"
 
-import { useRef, useEffect } from "react"
-import { motion, useScroll, useTransform, useSpring, type MotionValue } from "framer-motion"
-import { ParticlesContainer } from "@/components/particles"
-import { SkillsCloud } from "@/components/skills-cloud"
-import { ProjectsShowcase } from "@/components/projects-showcase"
+import { useRef, useEffect, useState, useMemo } from "react"
+import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import Image from "next/image"
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { ArrowDown, Github, ExternalLink } from "lucide-react"
+import { ContactSection } from "@/components/contact-section"
+import { Navigation } from "@/components/navigation"
+import { VerticalPagination } from "@/components/vertical-pagination"
+import { ProjectsTabs } from "@/components/projects-tabs"
+import { SkillsCloud } from "@/components/skills-cloud"
+import Particles, { initParticlesEngine } from "@tsparticles/react"
+import { loadSlim } from "@tsparticles/slim"
+import type { ISourceOptions } from "@tsparticles/engine"
 
-// Custom Hook for section animations
-function useSectionAnimation(progress: MotionValue<number>) {
-  return {
-    // Adjust ranges for quicker fade/slide
-    opacity: useTransform(progress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]), 
-    y: useTransform(progress, [0, 0.1, 0.9, 1], [80, 0, 0, -80]), // Reduced travel distance
-  }
+// Particles component for interactive background
+function ParticlesBackground() {
+  const [init, setInit] = useState(false)
+
+  // Initialize the particles engine
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine)
+    }).then(() => {
+      setInit(true)
+    })
+  }, [])
+
+  // Configure the particles
+  const particlesOptions: ISourceOptions = useMemo(
+    () => ({
+      background: {
+        color: {
+          value: "transparent",
+        },
+      },
+      fpsLimit: 60,
+      interactivity: {
+        events: {
+          onClick: {
+            enable: true,
+            mode: "push",
+          },
+          onHover: {
+            enable: true,
+            mode: "bubble",
+          },
+        },
+        modes: {
+          push: {
+            quantity: 3,
+          },
+          bubble: {
+            distance: 200,
+            duration: 0.4,
+            size: 40,
+            opacity: 0.8,
+          },
+          repulse: {
+            distance: 100,
+          },
+          attract: {
+            distance: 200,
+            duration: 0.4,
+          },
+        },
+      },
+      particles: {
+        color: {
+          value: [
+            "#d14d84", 
+            "#eacce6", 
+            "#f9f4fb"
+          ],
+        },
+        links: {
+          color: "#eacce6",
+          distance: 150,
+          enable: true,
+          opacity: 0.3,
+          width: 1,
+        },
+        collisions: {
+          enable: true,
+          mode: "bounce",
+        },
+        move: {
+          direction: "none",
+          enable: true,
+          outModes: {
+            default: "bounce",
+          },
+          random: false,
+          speed: 1.2,
+          straight: false,
+        },
+        number: {
+          density: {
+            enable: true,
+            area: 800,
+          },
+          value: 40,
+        },
+        opacity: {
+          value: { min: 0.2, max: 0.5 },
+          animation: {
+            enable: true,
+            speed: 0.5,
+            minimumValue: 0.2,
+          },
+        },
+        shape: {
+          type: "circle",
+        },
+        size: {
+          value: { min: 10, max: 30 },
+          animation: {
+            enable: true,
+            speed: 2,
+            minimumValue: 5,
+            sync: false,
+          },
+        },
+      },
+      detectRetina: true,
+    }),
+    [],
+  )
+
+  if (!init) return null
+
+  return <Particles id="tsparticles" options={particlesOptions} className="absolute inset-0 z-0" />
 }
 
 export default function Home() {
-  const ref = useRef(null)
-  const heroRef = useRef(null)
-  const blogRef = useRef(null)
-  const projectsRef = useRef(null)
+  // Define section names for vertical pagination
+  const sections = ["home", "about", "skills", "projects", "contact"]
+  
+  // Refs for scroll animations
+  const aboutRef = useRef(null)
   const skillsRef = useRef(null)
-
+  const projectsRef = useRef(null)
+  const contactRef = useRef(null)
+  
   // Ensure page starts at top on load
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-
-  const { scrollYProgress: blogScrollProgress } = useScroll({
-    target: blogRef,
+  
+  // Section animations setup
+  const { scrollYProgress: aboutScrollProgress } = useScroll({
+    target: aboutRef,
     offset: ["start end", "end 0.8"],
   })
-
-  const { scrollYProgress: projectsScrollProgress } = useScroll({
-    target: projectsRef,
-    offset: ["start end", "end 0.8"],
-  })
-
+  
   const { scrollYProgress: skillsScrollProgress } = useScroll({
     target: skillsRef,
     offset: ["start end", "end 0.8"],
   })
-
-  // Spring configs - can potentially reduce damping for faster feel
-  const springConfig = { stiffness: 80, damping: 12, restDelta: 0.001 }
-  const smoothBlogProgress = useSpring(blogScrollProgress, springConfig)
-  const smoothProjectsProgress = useSpring(projectsScrollProgress, springConfig)
+  
+  const { scrollYProgress: projectsScrollProgress } = useScroll({
+    target: projectsRef,
+    offset: ["start end", "end 0.8"],
+  })
+  
+  const { scrollYProgress: contactScrollProgress } = useScroll({
+    target: contactRef,
+    offset: ["start end", "end 0.8"],
+  })
+  
+  // Spring configs for smoother animations
+  const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 }
+  const smoothAboutProgress = useSpring(aboutScrollProgress, springConfig)
   const smoothSkillsProgress = useSpring(skillsScrollProgress, springConfig)
+  const smoothProjectsProgress = useSpring(projectsScrollProgress, springConfig)
+  const smoothContactProgress = useSpring(contactScrollProgress, springConfig)
+  
+  // Section animations
+  const aboutAnimation = {
+    opacity: useTransform(smoothAboutProgress, [0, 0.2], [0, 1]),
+    y: useTransform(smoothAboutProgress, [0, 0.2], [50, 0]),
+  }
+  
+  const skillsAnimation = {
+    opacity: useTransform(smoothSkillsProgress, [0, 0.2], [0, 1]),
+    y: useTransform(smoothSkillsProgress, [0, 0.2], [50, 0]),
+  }
+  
+  const projectsAnimation = {
+    opacity: useTransform(smoothProjectsProgress, [0, 0.2], [0, 1]),
+    y: useTransform(smoothProjectsProgress, [0, 0.2], [50, 0]),
+  }
+  
+  const contactAnimation = {
+    opacity: useTransform(smoothContactProgress, [0, 0.2], [0, 1]),
+    y: useTransform(smoothContactProgress, [0, 0.2], [50, 0]),
+  }
 
-  // Hero section animations
-  const { scrollYProgress: heroScrollProgress } = useScroll({ target: heroRef, offset: ["start start", "end 0.6"] });
-  const smoothHeroProgress = useSpring(heroScrollProgress, springConfig);
-  const heroOpacity = useTransform(smoothHeroProgress, [0, 0.6], [1, 0]);
-  const heroScale = useTransform(smoothHeroProgress, [0, 0.6], [1, 0.85]);
-  const heroY = useTransform(smoothHeroProgress, [0, 0.6], [0, -150]);
-
-  // Apply custom hook for section animations
-  const blogAnimation = useSectionAnimation(smoothBlogProgress)
-  const projectsAnimation = useSectionAnimation(smoothProjectsProgress)
-  const skillsAnimation = useSectionAnimation(smoothSkillsProgress)
+  // Text animation variants
+  const textContainer = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: 0.12, delayChildren: 0.04 * i },
+    }),
+  };
+  
+  const textChild = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      transition: { type: "spring", damping: 12, stiffness: 100 },
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", damping: 12, stiffness: 100 },
+    },
+  };
 
   return (
-    <main className="relative flex flex-col bg-black" ref={ref}>
-      <ParticlesContainer />
-
-      <motion.section 
-        ref={heroRef}
-        style={{ 
-          opacity: heroOpacity,
-          scale: heroScale,
-          y: heroY 
-        }} 
-        className="relative z-10 flex min-h-screen items-center justify-center pt-24"
-      >
-        <div className="container mx-auto px-4">
+    <main className="relative bg-[#f0e5f3]">
+      <Navigation />
+      <VerticalPagination sections={sections} />
+      
+      {/* Hero Section with Text Animation */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden" id="home">
+        <div className="absolute inset-0 bg-[#f0e5f3]">
+          <ParticlesBackground />
+        </div>
+        
+        <div className="container mx-auto text-center z-10">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
+            className="mb-6"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-center"
           >
-            <h1 className="mb-6 text-6xl font-bold tracking-tighter md:text-8xl">Jafar Niaz</h1>
-            <p className="mb-8 text-xl text-gray-400">Full Stack Developer | Temasek Polytechnic</p>
-            <motion.div
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ 
-                duration: 0.8,
-                delay: 0.4,
-                type: "spring",
-                stiffness: 100
-              }}
-              className="relative mx-auto h-64 w-64 overflow-hidden rounded-full border-2 border-primary md:h-96 md:w-96"
+            <motion.h1 
+              className="text-7xl md:text-9xl font-bold text-[#604065] mb-4 lowercase"
+              variants={textContainer}
+              initial="hidden"
+              animate="visible"
             >
-              <Image
-                src="/DashboardMyPic.jpeg"
-                alt="Profile"
-                fill
-                className="object-cover"
-                priority
-              />
-            </motion.div>
+              {"hello".split("").map((letter, index) => (
+                <motion.span
+                  key={index}
+                  variants={textChild}
+                  className="inline-block"
+                >
+                  {letter}
+                </motion.span>
+              ))}
+            </motion.h1>
+            
             <motion.p
-              initial={{ opacity: 0, y: 30 }}
+              className="text-xl md:text-2xl text-[#604065]/80 mt-4 lowercase"
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="mx-auto mt-8 max-w-2xl text-lg text-gray-400"
+              transition={{ delay: 1.2, duration: 0.8 }}
             >
-              Crafting digital experiences through web development, while exploring the intersections of technology,
-              creative writing, game design, and music composition.
+              i&apos;m jafar niaz, a full stack developer and year 2 information tech student at temasek polytechnic, singapore
             </motion.p>
           </motion.div>
-        </div>
-      </motion.section>
-
-      <motion.section 
-        ref={blogRef}
-        style={blogAnimation}
-        className="relative z-10 flex min-h-screen items-center py-32"
-      >
-        <div className="container mx-auto px-4">
+          
           <motion.div
-            className="transform-gpu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2.0, duration: 0.8 }}
+            className="absolute bottom-10 left-0 right-0 text-center"
           >
-            <h2 className="mb-12 text-center text-4xl font-bold">From the Blog</h2>
-            <Link 
-              href="https://jafspaper.vercel.app/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="group block mx-auto max-w-4xl transition-transform duration-300 ease-in-out hover:scale-[1.02] focus:scale-[1.02]"
-            >
-              <div className="overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/50 shadow-lg backdrop-blur-md">
-                <div className="grid gap-6 md:grid-cols-2 md:gap-0">
-                  <div className="relative aspect-video md:aspect-auto">
-                    <Image 
-                      src="/blog.png" 
-                      alt="jaf's paper blog preview" 
-                      fill 
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:bg-gradient-to-r"></div>
-                  </div>
-                  <div className="flex flex-col justify-center p-6 md:p-8">
-                    <p className="mb-1 text-sm text-gray-400">Latest Post • April 8, 2024</p>
-                    <h3 className="mb-3 text-2xl font-semibold text-white">my first post (and why)</h3>
-                    <p className="mb-4 text-gray-300">
-                      Feels kinda crazy that I&apos;m writing something, haven&apos;t been writing actively about remotely anything...
-                    </p>
-                    <div className="mt-2 inline-flex items-center font-medium text-white group-hover:text-primary transition-colors">
-                      Read More 
-                      <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </div>
-                  </div>
-                </div>
+            <div className="flex flex-col items-center">
+              <div className="bg-[#eacce6] p-3 rounded-full shadow-md">
+                <ArrowDown className="h-6 w-6 text-[#604065] animate-bounce" />
               </div>
-            </Link>
+              <p className="text-[#604065] mt-3 font-medium lowercase">scroll to explore</p>
+            </div>
           </motion.div>
         </div>
+      </section>
+
+      {/* About/Intro Section with Image and Text */}
+      <motion.section
+        ref={aboutRef}
+        style={aboutAnimation}
+        className="relative py-28 px-4 bg-gradient-soft"
+        id="about"
+      >
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="relative">
+              <div className="relative w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg border-4 border-white">
+                <Image
+                  src="/DashboardMyPic.jpeg"
+                  alt="Jafar Niaz"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#d14d84]/20 to-transparent"></div>
+              </div>
+              
+              <div className="absolute -bottom-8 -right-8 w-40 h-40 rounded-full bg-[#eacce6]/50 -z-10"></div>
+              <div className="absolute -top-8 -left-8 w-32 h-32 rounded-full bg-[#d14d84]/20 -z-10"></div>
+            </div>
+            
+            <div className="space-y-6 bg-[#f9f4fb] p-8 rounded-2xl shadow-sm border border-[#eacce6]">
+              <div>
+                <h3 className="font-medium text-[#d14d84] mb-2 lowercase">hello, i&apos;m</h3>
+                <h1 className="text-5xl font-bold mb-4 text-[#604065] lowercase">jafar niaz</h1>
+                <p className="text-xl text-[#604065]/80 lowercase">
+                  full stack developer | temasek polytechnic
+                </p>
+              </div>
+              
+              <div className="space-y-4">
+                <p className="text-[#604065]/90 lowercase">
+                  i&apos;m passionate about crafting digital experiences through web development, while exploring 
+                  the intersections of technology, creative writing, game design, and music composition.
+                </p>
+                <p className="text-[#604065]/90 lowercase">
+                  with a strong foundation in modern web technologies, i enjoy building applications that 
+                  are not only functional but also aesthetically pleasing and user-friendly.
+                </p>
+              </div>
+              
+              <div className="flex space-x-4 pt-4">
+                <a 
+                  href="https://github.com/jafarnz" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2 bg-[#d14d84] text-white px-5 py-2.5 rounded-full hover:opacity-90 transition-opacity shadow-sm lowercase"
+                >
+                  <Github className="h-4 w-4" />
+                  <span>github</span>
+                </a>
+                <a 
+                  href="https://jafspaper.vercel.app/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="flex items-center space-x-2 bg-[#eacce6] text-[#604065] px-5 py-2.5 rounded-full hover:bg-[#d14d84] hover:text-white transition-colors shadow-sm lowercase"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  <span>blog</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </motion.section>
 
+      {/* Skills Section */}
+      <motion.section
+        ref={skillsRef}
+        style={skillsAnimation}
+        className="relative py-28 px-4"
+        id="skills"
+      >
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-[#604065] lowercase">skills</h2>
+            <p className="text-[#604065]/80 mt-4 max-w-2xl mx-auto lowercase">
+              technologies and tools i work with
+            </p>
+          </div>
+          
+          <div className="bg-[#f9f4fb] p-8 rounded-2xl shadow-sm">
+            <SkillsCloud />
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Projects Section (Tabbed) */}
       <motion.section
         ref={projectsRef}
         style={projectsAnimation}
-        className="relative z-10 flex min-h-screen items-center py-32"
+        className="relative py-28 px-4"
+        id="projects"
       >
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="transform-gpu"
-          >
-            <motion.h2 
-              className="mb-16 text-center text-4xl font-bold"
-            >
-              Featured Projects
-            </motion.h2>
-            <motion.div
-            >
-              <ProjectsShowcase />
-            </motion.div>
-          </motion.div>
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-[#604065] lowercase">projects</h2>
+            <p className="text-[#604065]/80 mt-4 max-w-2xl mx-auto lowercase">
+              a showcase of my work, ranging from full-stack applications to smaller side projects.
+            </p>
+          </div>
+          
+          <ProjectsTabs />
         </div>
       </motion.section>
 
-      <motion.section 
-        ref={skillsRef}
-        style={skillsAnimation}
-        className="relative z-10 flex min-h-screen items-center py-32"
+      {/* Contact Section */}
+      <motion.section
+        ref={contactRef}
+        style={contactAnimation}
+        className="relative py-28 px-4"
+        id="contact"
       >
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="transform-gpu"
-          >
-            <motion.h2 
-              className="mb-16 text-center text-4xl font-bold"
-            >
-              Skills & Technologies
-            </motion.h2>
-            <motion.div
-            >
-              <SkillsCloud />
-            </motion.div>
-          </motion.div>
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-[#604065] lowercase">contact me</h2>
+            <p className="text-[#604065]/80 mt-4 max-w-2xl mx-auto lowercase">
+              have a project in mind or want to collaborate? let&apos;s get in touch!
+            </p>
+          </div>
+          
+          <ContactSection />
         </div>
       </motion.section>
 
+      {/* Footer */}
+      <footer className="py-12 px-4 text-center border-t border-[#eacce6]">
+        <div className="container mx-auto">
+          <p className="text-[#604065]/80 lowercase">
+            © {new Date().getFullYear()} jafar niaz. all rights reserved.
+          </p>
+          <p className="text-[#604065]/60 mt-2 text-sm lowercase">
+            built with next.js and tailwind css
+          </p>
+        </div>
+      </footer>
     </main>
   )
 }

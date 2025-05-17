@@ -42,7 +42,7 @@ const techIcons: Record<string, any> = {
 }
 
 const techColors: Record<string, string> = {
-  "Next.js": "#FFFFFF",
+  "Next.js": "#604065",
   React: "#61DAFB",
   TypeScript: "#3178C6",
   JavaScript: "#F7DF1E",
@@ -52,27 +52,26 @@ const techColors: Record<string, string> = {
   MongoDB: "#47A248",
   "Node.js": "#339933",
   "Chart.js": "#FF6384",
-  WebSocket: "#4B4BFF",
+  WebSocket: "#d14d84",
   Supabase: "#3ECF8E",
 }
 
 export function TechBadge({ name }: TechBadgeProps) {
   const Icon = techIcons[name]
-  const color = techColors[name] || "#4B5563"
+  const color = techColors[name] || "#604065"
 
   return (
     <div
-      className="group relative flex items-center gap-2 rounded-xl bg-black/50 px-4 py-2 font-mono text-sm backdrop-blur-sm transition-all duration-300 hover:scale-105"
+      className="group relative flex items-center gap-2 rounded-full bg-[#f9f4fb] px-4 py-2 font-medium text-sm transition-all duration-300 hover:scale-105 border border-[#eacce6]"
       style={{
-        boxShadow: `0 0 20px ${color}20`,
-        border: `1px solid ${color}30`,
+        boxShadow: `0 0 10px ${color}10`,
         color: color,
       }}
     >
       {Icon && <Icon className="h-4 w-4" />}
       {name}
       <div
-        className="absolute inset-0 -z-10 rounded-xl opacity-0 blur transition-opacity duration-300 group-hover:opacity-20"
+        className="absolute inset-0 -z-10 rounded-full opacity-0 blur transition-opacity duration-300 group-hover:opacity-10"
         style={{ backgroundColor: color }}
       />
     </div>

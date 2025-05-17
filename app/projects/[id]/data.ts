@@ -27,7 +27,7 @@ export const projects = {
       { name: "Supabase" },
     ],
     link: "https://tpconnect.xyz",
-    accent: "#FF4B4B",
+    accent: "#d14d84",
   },
   swyftviewer: {
     title: "SwyftViewer",
@@ -51,7 +51,7 @@ export const projects = {
       { name: "MongoDB" },
     ],
     link: "https://swyftviewer.vercel.app",
-    accent: "#00FF88",
+    accent: "#eacce6",
   },
   swyft: {
     title: "Swyft",
@@ -74,7 +74,7 @@ export const projects = {
       { name: "Tailwind" },
     ],
     link: "https://swyft3.vercel.app",
-    accent: "#4B4BFF",
+    accent: "#604065",
   },
   swyftbiz: {
     title: "swyftbiz",
@@ -97,7 +97,7 @@ export const projects = {
       { name: "Tailwind" },
     ],
     link: "https://swyftbiz.vercel.app",
-    accent: "#4B4BFF",
+    accent: "#d14d84",
   },
   jafspaper: {
     title: "jaf's paper",
@@ -120,7 +120,7 @@ export const projects = {
       { name: "Tailwind" },
     ],
     link: "https://jafspaper.vercel.app/",
-    accent: "#FFFFFF", // White accent theme
+    accent: "#f9f4fb", 
   },
   ningstudios: {
     title: "*NING Studios",
@@ -145,6 +145,6 @@ export const projects = {
       // Add other relevant tech if known (e.g., TypeScript?)
     ],
     link: "https://ningstudios.vercel.app/",
-    accent: "#590221FF", // Maroon accent color
+    accent: "#d14d84", 
   },
 } 

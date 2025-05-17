@@ -58,7 +58,7 @@ export function ProjectClient({ project }: ProjectClientProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-black pt-24 pb-16"
+      className="min-h-screen bg-[#f0e5f3] pt-24 pb-16"
       style={
         {
           "--project-accent": project.accent,
@@ -66,23 +66,23 @@ export function ProjectClient({ project }: ProjectClientProps) {
       }
     >
       <div className="container mx-auto max-w-5xl px-4">
-        <Link href="/" className="mb-6 inline-flex items-center gap-2 text-gray-400 transition-colors hover:text-white">
+        <Link href="/" className="mb-6 inline-flex items-center gap-2 text-[#604065]/70 transition-colors hover:text-[#d14d84]">
           <ArrowLeft className="h-4 w-4" />
           Back to Home
         </Link>
 
         <div className="grid gap-8">
           <motion.div initial={{ y: 20 }} animate={{ y: 0 }}>
-            <h1 className="mb-3 text-4xl font-bold" style={{ color: project.accent }}>
+            <h1 className="mb-3 text-4xl font-bold text-[#d14d84]">
               {project.title}
             </h1>
-            <p className="mb-4 text-lg text-gray-400">{project.description}</p>
+            <p className="mb-4 text-lg text-[#604065]/80">{project.description}</p>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="group relative mx-auto aspect-[16/9] w-full max-w-2xl overflow-hidden rounded-lg"
+            className="group relative mx-auto aspect-[16/9] w-full max-w-2xl overflow-hidden rounded-2xl card-pastel"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
@@ -111,14 +111,14 @@ export function ProjectClient({ project }: ProjectClientProps) {
             >
               <button
                 onClick={previousImage}
-                className="rounded-full bg-black/50 p-2 text-white backdrop-blur-sm transition-all hover:scale-110 hover:bg-black/70"
+                className="rounded-full bg-[#d14d84]/50 p-2 text-white backdrop-blur-sm transition-all hover:scale-110 hover:bg-[#d14d84]/70"
                 aria-label="Previous image"
               >
                 <ChevronLeft className="h-6 w-6" />
               </button>
               <button
                 onClick={nextImage}
-                className="rounded-full bg-black/50 p-2 text-white backdrop-blur-sm transition-all hover:scale-110 hover:bg-black/70"
+                className="rounded-full bg-[#d14d84]/50 p-2 text-white backdrop-blur-sm transition-all hover:scale-110 hover:bg-[#d14d84]/70"
                 aria-label="Next image"
               >
                 <ChevronRight className="h-6 w-6" />
@@ -129,38 +129,38 @@ export function ProjectClient({ project }: ProjectClientProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/50 px-3 py-1 text-sm text-white backdrop-blur-sm"
+              className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-[#604065]/50 px-3 py-1 text-sm text-white backdrop-blur-sm"
             >
               {currentImageIndex + 1} / {project.images.length}
             </motion.div>
 
             {/* Keyboard navigation hint */}
             <div className="absolute bottom-4 right-4 hidden gap-2 text-sm text-white/70 sm:flex">
-              <kbd className="rounded bg-black/30 px-2 py-1 backdrop-blur-sm">←</kbd>
-              <kbd className="rounded bg-black/30 px-2 py-1 backdrop-blur-sm">→</kbd>
+              <kbd className="rounded bg-[#604065]/30 px-2 py-1 backdrop-blur-sm">←</kbd>
+              <kbd className="rounded bg-[#604065]/30 px-2 py-1 backdrop-blur-sm">→</kbd>
             </div>
           </motion.div>
 
           <div className="grid gap-8 md:grid-cols-2">
-            <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-semibold">Key Features</h2>
+            <div className="flex flex-col gap-2 bg-[#f9f4fb] p-6 rounded-2xl shadow-sm border border-[#eacce6]">
+              <h2 className="text-xl font-semibold text-[#604065]">Key Features</h2>
               <ul className="space-y-2">
                 {project.features.map((feature: string) => (
                   <motion.li
                     key={feature}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 text-[#604065]/90"
                   >
-                    <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: project.accent }} />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#d14d84]" />
                     {feature}
                   </motion.li>
                 ))}
               </ul>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-semibold">Technologies Used</h2>
+            <div className="flex flex-col gap-2 bg-[#f9f4fb] p-6 rounded-2xl shadow-sm border border-[#eacce6]">
+              <h2 className="text-xl font-semibold text-[#604065]">Technologies Used</h2>
               <div className="flex flex-wrap gap-2">
                 {project.tech.map((tech) => (
                   <TechBadge key={tech.name} name={tech.name} />
@@ -169,13 +169,12 @@ export function ProjectClient({ project }: ProjectClientProps) {
             </div>
           </div>
 
-          {/* Conditionally style the Visit Project link based on accent color */}
+          {/* Use consistent button styling */}
           <Link
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-block rounded-lg px-6 py-3 font-semibold transition-transform hover:scale-105 ${project.accent === "#FFFFFF" ? "text-black" : "text-white"}`}
-            style={{ backgroundColor: project.accent }}
+            className="button-pastel inline-block rounded-full px-6 py-3 font-medium transition-all hover:scale-105 text-center w-full md:w-auto"
           >
             Visit Project
           </Link>
