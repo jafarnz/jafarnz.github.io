@@ -38,6 +38,14 @@ const projects = [
     image: "/ning-studios-preview.png",
     color: "#d14d84",
     url: "https://ningstudios.vercel.app/"
+  },
+  {
+    id: "lastfm-scrobbler",
+    title: "cunty scrobbler (last.fm)",
+    description: "a python-based last.fm scrobbler with a yassified ui, built for a client wanting a girly and functional solution.",
+    image: "/image1.png",
+    color: "#FF69B4",
+    url: "https://github.com/jafarnz/lastfmscrobbler-py/releases/tag/slay"
   }
 ]
 

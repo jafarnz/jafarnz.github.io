@@ -147,4 +147,29 @@ export const projects = {
     link: "https://ningstudios.vercel.app/",
     accent: "#d14d84", 
   },
+  "lastfm-scrobbler": {
+    title: "cunty scrobbler (last.fm)",
+    description:
+      "a fabulously reimagined python last.fm scrobbler with a yassified ui (hot pink, hello kitty vibes!), auto-saved credentials, direct authentication, and real-time 'now playing' updates. built for a client who needed something effective and absolutely cunty.",
+    images: [
+      "/image1.png", // Main image
+      "/image2.png"  // Second image
+    ],
+    features: [
+      "credentials auto-saved in config.json (no more login blues!)",
+      "direct authentication (no tired web browser flow)",
+      "total yassification of the ui: hot pink, custom fonts, main character energy",
+      "real-time 'now playing' status updates",
+      "enhanced album art fetching for search & 'now playing'",
+      "search & scrobble as the default, prioritized tab",
+      "improved button visibility (deeper pinks, borders)"
+    ],
+    tech: [
+      { name: "Python" },
+      { name: "pyqt6" }, 
+      { name: "Last.fm API" }
+    ],
+    link: "https://github.com/jafarnz/lastfmscrobbler-py/releases/tag/slay", // Link to the release page
+    accent: "#FF69B4", // Hot Pink
+  }
 } 
